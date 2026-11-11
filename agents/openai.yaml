@@ -1,0 +1,4 @@
+interface:
+  display_name: "PaperLens · 论文透镜"
+  short_description: "生成按原文顺序的英中双栏论文精读，中文批注、双语同步高亮与吸顶图例"
+  default_prompt: "使用 $paperlens 将我提供的论文制作成完整双栏批注HTML，沿用固定风格、中文批注、双语同步高亮和原文图文顺序。"

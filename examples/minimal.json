@@ -1,0 +1,84 @@
+{
+  "schema_version": 1,
+  "paper": {
+    "title": "A miniature study of structured reading notes",
+    "title_zh": "结构化阅读笔记：一个用于展示论证分析的合成示例",
+    "authors": "Original demonstration text created for PaperLens",
+    "citation": "Synthetic example · no real experiment or publication is represented",
+    "course": "PaperLens · 论文论证精读演示"
+  },
+  "reading_note": "本页全部示例文字和图版为本项目原创合成材料，不摘录真实论文，也不报告真实实验结果。源页预览同样是演示图，不是学术论文PDF。",
+  "images": {
+    "pages": {"1": "source-page.svg"},
+    "figures": {"argument-map": "argument-map.svg"}
+  },
+  "items": [
+    {"type": "section", "id": "intro", "title": "从问题到主张", "subtitle": "A claim and its rationale", "kicker": "1 · INTRODUCTION", "nav_label": "问题与主张"},
+    {
+      "type": "paragraph", "id": "P01", "order_page": 1, "pages": [1],
+      "en": "Readers may confuse a claim with the evidence offered for it. An argument map makes their relationship explicit. We propose that structured notes make an argument easier to inspect.",
+      "zh": "读者可能混淆论点及其支撑证据。论证图可以明确二者的关系。本例提出，结构化笔记有助于更清晰地审视论证。",
+      "function": "引出问题，并提出一个待检验的主张。",
+      "role": "先说明阅读中的困难，再提出结构化笔记可能提供的帮助。",
+      "note": "提出合理机制并不等于验证效果。本例没有提供读者理解程度的实测数据。",
+      "category": "thesis",
+      "highlights": {"concept": ["argument map"], "thesis": ["structured notes make an argument easier to inspect"]},
+      "highlight_pairs": [
+        {"category": "concept", "en": "argument map", "zh": ["论证图"]},
+        {"category": "thesis", "en": "structured notes make an argument easier to inspect", "zh": ["结构化笔记有助于更清晰地审视论证"]}
+      ]
+    },
+    {"type": "section", "id": "illustration", "title": "方法与示意证据", "subtitle": "An illustrative method", "kicker": "2 · ILLUSTRATION", "nav_label": "方法与示意"},
+    {
+      "type": "paragraph", "id": "P02", "order_page": 1, "pages": [1],
+      "en": "This example uses a synthetic set of six short passages. In the constructed set, four passages contain an explicit limitation. The numbers describe the example, not observations from participants.",
+      "zh": "本例使用由六个短段落组成的合成材料。其中四段包含明确的限定条件。这些数字描述的是示例设计，并非来自参与者的观察数据。",
+      "function": "交代示例材料和其中可检查的特征。",
+      "role": "将抽象主张转换为可以标记和核对的阅读单元。",
+      "note": "合成材料可检验渲染和对齐，但不能据此推断真实读者的学习成效。",
+      "category": "method",
+      "highlights": {"method": ["a synthetic set of six short passages"], "evidence": ["four passages contain an explicit limitation"]},
+      "highlight_pairs": [
+        {"category": "method", "en": "a synthetic set of six short passages", "zh": ["由六个短段落组成的合成材料"]},
+        {"category": "evidence", "en": "four passages contain an explicit limitation", "zh": ["其中四段包含明确的限定条件"]}
+      ]
+    },
+    {
+      "type": "figure", "id": "F1", "order_page": 1, "pages": [1], "image_page": 1, "image_key": "argument-map", "title": "图1｜把主张、证据和推断边界连接起来", "short_title": "图1",
+      "en": "Figure 1. An argument map connects a claim to supporting passages and separates evidence from the limits of an inference.",
+      "zh": "图1：论证图将主张与支撑段落相连，并将证据与推断边界区分开来。",
+      "function": "将论证关系可视化。",
+      "role": "在方法段之后、局限段之前，展示从主张到证据及其边界的连接。",
+      "note": "这是原创示意图，没有实验数据。图示清晰并不等于其中的效果主张已经得到验证。",
+      "category": "evidence",
+      "highlights": {}, "highlight_pairs": []
+    },
+    {"type": "section", "id": "discussion", "title": "明确推断边界", "subtitle": "An explicit boundary", "kicker": "3 · DISCUSSION", "nav_label": "推断边界"},
+    {
+      "type": "paragraph", "id": "P03", "order_page": 1, "pages": [1],
+      "en": "This illustration does not measure learning outcomes. A controlled reader study would be needed to test that further claim.",
+      "zh": "本示例没有测量学习成效。若要检验这一进一步的主张，还需要有对照的读者研究。",
+      "function": "作出让步，限定结论。",
+      "role": "避免把可读性演示直接解释为学习效果的因果证据。",
+      "note": "说明尚未检验什么，有助于使结论与证据强度匹配；建议的后续研究应真正测量目标结局。",
+      "category": "concession",
+      "highlights": {"concession": ["This illustration does not measure learning outcomes"]},
+      "highlight_pairs": [{"category": "concession", "en": "This illustration does not measure learning outcomes", "zh": ["本示例没有测量学习成效"]}]
+    },
+    {"type": "references", "id": "references", "entries": [], "description": "本演示为原创合成材料，没有引用外部论文。"}
+  ],
+  "argument": {
+    "thesis": "结构化笔记可将论点、证据和推断边界清晰对应，使论文论证更便于审视。",
+    "chain": [
+      {"label": "问题", "text": "读者可能混淆论点及其支撑证据。", "target": "P01"},
+      {"label": "论点", "text": "结构化笔记可能让论证更便于审视。", "target": "P01"},
+      {"label": "证据", "text": "合成段落与原创图版展示如何进行对应。", "target": "P02"},
+      {"label": "让步", "text": "本例没有测量真实的学习效果。", "target": "P03"},
+      {"label": "结论", "text": "完成了方法演示，效果仍需读者研究验证。", "target": "P03"}
+    ],
+    "matrix": [{"claim": "结构化笔记有助于阅读", "supports": "演示了主张与证据如何对应", "limits": "没有读者研究，不能声称提高学习成绩"}],
+    "strongest": {"title": "对应关系可以核查", "text": "每个单元均保留原文、译文和具体批注，英中高亮可逐项对应。"},
+    "weakest": {"title": "没有实际效果测量", "text": "清晰的演示不能替代对学习成效的直接检验。"}
+  },
+  "coverage": ["本示例包含三段合成文字、一幅原创示意图和一张合成源页。", "全部内容为项目演示原创材料，按MIT许可发布。"]
+}
