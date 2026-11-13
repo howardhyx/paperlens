@@ -97,8 +97,8 @@ def render_row(item):
     image=''
     if isfigure:
         key=esc(item['image_key']);title=esc(item['title']);page=item.get('image_page',item['order_page'])
-        image=f'''<figure class="figure-panel"><button class="figure-open" data-figure="{key}" data-title="{title}" aria-label="放大{title}"><img data-image="figures:{key}" loading="lazy" width="1080" height="1350" alt="{title}，原论文图版"><span>点击放大源图 ↗</span></button><figcaption>源图：合并PDF第{int(page)}页 · 图注紧接下方</figcaption></figure>'''
-    row=f'''<article class="pair {category}" id="{ident}" data-search="{ident}" data-order-page="{int(item['order_page'])}"><div class="bilingual"><div class="paragraph-meta"><a class="paragraph-id" href="#{ident}">{ident}</a><span>{'原图与图注' if isfigure else '原文'} · EN / 中</span><span class="source-links">{refs}</span></div>{image}<p class="original" lang="en">{highlighter(item)}</p><div class="translation" lang="zh-CN"><span class="translation-label">中文意译 · 与英文同色对应</span><p>{translation_highlighter(item)}</p></div></div>{annotate(item)}</article>'''
+        image=f'''<figure class="figure-panel"><button class="figure-open" data-figure="{key}" data-title="{title}" aria-label="放大{title}"><img data-image="figures:{key}" loading="lazy" width="1080" height="1350" alt="{title}，原论文图版"><span>点击放大源图 ↗</span></button><figcaption>源图：合并PDF第{int(page)}页</figcaption></figure>'''
+    row=f'''<article class="pair {category}" id="{ident}" data-search="{ident}" data-order-page="{int(item['order_page'])}"><div class="bilingual"><div class="paragraph-meta"><a class="paragraph-id" href="#{ident}">{ident}</a><span>{'原图与图注' if isfigure else '原文'} · EN / 中</span><span class="source-links">{refs}</span></div>{image}<p class="original" lang="en">{highlighter(item)}</p><div class="translation" lang="zh-CN"><span class="translation-label">中文意译</span><p>{translation_highlighter(item)}</p></div></div>{annotate(item)}</article>'''
     heading=''
     if item.get('subheading'):heading=f'<h3 class="record-heading">{esc(item["subheading"])}</h3>'
     if isfigure:return f'<div class="inline-figure"><h3 class="record-heading figure-title">{esc(item["title"])}</h3>{row}</div>'
@@ -115,13 +115,16 @@ def render_items(items):
         elif typ in ['paragraph','figure']:out.append(render_row(item))
         elif typ=='references':
             entries=item.get('entries',[]);bibliography=''.join(f'<li id="ref-{n+1}" lang="en">{esc(entry)}</li>' for n,entry in enumerate(entries))
-            note={'id':ident,'function':item.get('function','注明既有知识和分析方法的来源。'),'role':item.get('role','提供从既有生物学或学科知识连接到新观察的背景依据。'),'note':item.get('note','引用不等于相邻主张已被证明；核查其研究对象、方法和结论是否匹配。未查阅被引全文时，应明确这一边界。')}
-            out.append(f'<section id="{ident}" class="reading-section"><header class="section-heading"><span class="eyebrow">REFERENCES</span><h2>参考文献</h2><p class="section-description">{esc(item.get("description","参考文献保留原始著录格式。"))}</p></header><div class="refs-header"><div><details class="reference-details"><summary>展开全部{len(entries)}条参考文献</summary><ol class="references">{bibliography}</ol></details></div>{annotate(note)}</div></section>')
+            note=annotate(item) if all(item.get(k,'').strip() for k in ['function','role','note']) else ''
+            description=f'<p class="section-description">{esc(item["description"])}</p>' if item.get('description') else ''
+            bibliography=f'<details class="reference-details"><summary>展开全部{len(entries)}条参考文献</summary><ol class="references">{bibliography}</ol></details>'
+            content=f'<div class="refs-header"><div>{bibliography}</div>{note}</div>' if note else bibliography
+            out.append(f'<section id="{ident}" class="reading-section"><header class="section-heading"><h2>参考文献</h2>{description}</header>{content}</section>')
     if open_section:out.append('</section>')
     return '\n'.join(out)
 
 def render_overview(arg):
-    out=['<section id="argument" class="overview"><header class="overview-heading"><span class="eyebrow">THE ARGUMENT AT A GLANCE</span><h2>全文论证结构总览</h2><p class="section-description">还原作者的解释，并标明每一步证据能够承担的推断。</p></header>']
+    out=['<section id="argument" class="overview"><header class="overview-heading"><h2>全文论证结构总览</h2></header>']
     out.append(f'<div class="thesis-statement"><span class="eyebrow">作者核心主张 · 一句话</span><p>{esc(arg["thesis"])}</p></div><div class="logic-chain">')
     colors=['concept','thesis','evidence','concession','thesis']
     for index,step in enumerate(arg['chain']):
@@ -152,18 +155,14 @@ def render(data,base):
     course=paper.get('course') or '课程信息：点击填写课程名称'
     doi=paper.get('doi','');doihtml=''
     if doi:doihtml=f'<br><a href="https://doi.org/{esc(doi)}" target="_blank" rel="noopener">DOI: {esc(doi)} ↗</a>'
-    header=f'''<header class="masthead"><div class="wrap"><div class="masthead-top"><span class="edition">PAPER READING / ARGUMENT & EVIDENCE</span><span class="course" id="course" contenteditable="true" role="textbox" aria-label="课程信息，可点击填写" spellcheck="false">{esc(course)}</span></div><div class="hero"><div><h1 lang="en">{esc(title)}</h1><p class="zh-title">{esc(paper.get('title_zh',''))}</p><p class="citation">{esc(paper.get('authors',''))}<br>{esc(paper.get('citation',''))}{doihtml}</p></div><aside class="hero-side"><div>阅读焦点<b>主张如何成立</b></div><div>英中对照与中文批注<b>{len(rows)} 组</b></div><div>图文顺序<b>遵循原文位置</b></div></aside></div></div></header>'''
-    intro=f'''<section class="reading-intro"><div class="guide-grid"><div><span class="eyebrow">A CLOSE READING OF CAUSAL CLAIMS</span><h2>沿着“证据 → 推断 → 主张”阅读</h2><p>左栏逐段保留英文原文，紧接中文意译；英中对应内容使用相同颜色高亮。右栏用中文说明段落功能、逻辑角色、论证技巧和潜在漏洞。图版依原文出现位置穿插，不集中放在文末。</p><p class="scope">{esc(data.get('reading_note','英文仅整理断行、连字和上下标；不改写原文结论。跨页段落保持连续，遇跨段浮图时，在最近的完整段落边界插入。'))}</p></div><div class="read-key"><div class="key-line"><span class="tag">直接观察</span>存活、实验测量、样本与统计结果</div><div class="key-line"><span class="tag">作者推断</span>机制、因果方向与功能解释</div><div class="key-line"><span class="tag">尚待检验</span>证据尚不能承担的进一步主张</div><p class="scope">顶部五色图例持续显示，点击同时开关英中两边的同类高亮。</p></div></div>'''
-    if data.get('ribbon'):
-        intro+='<div class="argument-ribbon">'+''.join(f'<a href="#{identifier(s["target"])}"><strong>{esc(s["title"])}</strong><span>{esc(s["text"])}</span></a>' for s in data['ribbon'])+'</div>'
-    if figures:intro+='<div class="figure-index" aria-label="原文图版索引">'+''.join(f'<a href="#{f["id"]}">{esc(f.get("short_title",f["id"]))} ↗</a>' for f in figures)+'</div>'
-    intro+='</section>'
+    header=f'''<header class="masthead"><div class="wrap"><div class="masthead-top"><span class="course" id="course" contenteditable="true" role="textbox" aria-label="课程信息，可点击填写" spellcheck="false">{esc(course)}</span></div><div class="hero"><div><h1 lang="en">{esc(title)}</h1><p class="zh-title">{esc(paper.get('title_zh',''))}</p><p class="citation">{esc(paper.get('authors',''))}<br>{esc(paper.get('citation',''))}{doihtml}</p></div></div></div></header>'''
     nav=''.join(f'<a href="#{item["id"]}">{esc(item["nav_label"])}</a>' for item in data['items'] if item.get('nav_label'))+'<a href="#argument">论证总览</a><a href="#source">原页核对</a>'
     options=''.join(f'<option value="{i["id"]}">{esc(i.get("title",i["id"]))}</option>' for i in data['items'] if i['type'] in ['chapter','section','figure','references'])
-    coverage='<div class="coverage"><h3>完整性与阅读说明</h3><ul>'+''.join(f'<li>{esc(line)}</li>' for line in data.get('coverage',[]))+'</ul><p>字体、图像、样式与交互均内嵌，离线可用。课程信息可在顶部填写，仅保存在当前浏览器；DOI需要联网打开。</p></div>'
+    material_notes=[line for line in data.get('coverage',[]) if line.strip()]
+    coverage=('<details class="coverage"><summary>材料说明</summary><ul>'+''.join(f'<li>{esc(line)}</li>' for line in material_notes)+'</ul></details>') if material_notes else ''
     thumbs=''.join(f'<button class="page-thumb" data-page="{int(p)}"><img data-image="pages:{int(p)}" loading="lazy" width="230" height="310" alt="原PDF第{int(p)}页预览"><span>PDF {int(p):02d}</span></button>' for p in sorted(images['pages'],key=int))
     archive=f'<section id="source" class="source-archive"><details><summary>原页核对 · 展开{pagecount}页PDF图像</summary><p class="archive-note">点击缩略图查看原页，左右箭头翻页，Esc关闭。正文中的“PDF p.”直接打开对应页。</p><div class="page-grid">{thumbs}</div></details></section>'
-    slots={'TITLE':esc(title),'STORAGE_KEY':'paper-reader-'+hashlib.sha256(title.encode()).hexdigest()[:16],'HEADER':header,'LEGEND':legends,'NAV':nav,'OPTIONS':options,'INTRO':intro,'CONTENT':render_items(data['items']),'OVERVIEW':render_overview(data['argument']),'COVERAGE':coverage,'SOURCE':archive,'IMAGES':json.dumps(images,separators=(',',':')).replace('</','<\\/'),'FONTS':'\n'.join(fontcss),'CSS':(SKILL/'assets/reader.css').read_text(encoding='utf8'),'JS':(SKILL/'assets/reader.js').read_text(encoding='utf8')}
+    slots={'TITLE':esc(title),'STORAGE_KEY':'paper-reader-'+hashlib.sha256(title.encode()).hexdigest()[:16],'HEADER':header,'LEGEND':legends,'NAV':nav,'OPTIONS':options,'CONTENT':render_items(data['items']),'OVERVIEW':render_overview(data['argument']),'COVERAGE':coverage,'SOURCE':archive,'IMAGES':json.dumps(images,separators=(',',':')).replace('</','<\\/'),'FONTS':'\n'.join(fontcss),'CSS':(SKILL/'assets/reader.css').read_text(encoding='utf8'),'JS':(SKILL/'assets/reader.js').read_text(encoding='utf8')}
     output=(SKILL/'assets/shell.html').read_text(encoding='utf8')
     for key,value in slots.items():output=output.replace('@@'+key+'@@',value)
     assert not re.search(r'@@[A-Z_]+@@',output),'Unfilled template slot'

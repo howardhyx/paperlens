@@ -7,9 +7,8 @@
 - `images.pages`: PDF页码字符串映射到图像文件路径或`data:image/...`。相对路径相对于JSON所在目录。
 - `images.figures`: 任意图片键映射到图版图像路径或data URI。与页图分开，可在一页裁出多幅图。
 - `argument`: 文末论证总览，见下文。
-- 可选`reading_note`: 原文整理、跨页段和图文位置处理说明。
-- 可选`ribbon`: 顶部简短论证路线，条目为`target`、`title`、`text`。
-- 可选`coverage`: 字符串数组，说明材料覆盖、缺失附件、源文不一致及来源。
+- 可选`coverage`: 字符串数组，仅记录实际影响理解的材料缺失、源文不一致或必要来源说明。非空时在文末“材料说明”中折叠显示；不填写制作流程、功能介绍或遵循规范的声明。
+- 旧字段`reading_note`、`ribbon`仍可出现在输入中，但不再渲染。必要的材料问题应写入相关单元或`coverage`，不要新建顶部导读。
 
 ## items单元
 
@@ -17,7 +16,7 @@
 
 ### section：章节/小节起点
 
-`type: "section"`，字段`id`、`title`（中文）、可选`subtitle`（英文原节名）、`kicker`、`description`。`nav_label`存在时加入吸顶章节导航。渲染器在下一节、章或参考文献前关闭本节。
+`type: "section"`，字段`id`、`title`（中文）、可选`subtitle`（英文原节名）、`kicker`、`description`。`nav_label`存在时加入吸顶章节导航。渲染器在下一节、章或参考文献前关闭本节。`kicker`仅用于源文已有的章节编号/名称，`description`仅用于具体内容说明，不添加装饰口号或模板介绍。
 
 ### chapter：大章幕封
 
@@ -75,7 +74,7 @@
 
 ### references：文献表
 
-包含且仅包含一个`type: "references"`记录，字段`id`、`entries`（原始著录字符串数组），可选`order_page`、`description`、`nav_label`及三项中文批注。没有文献表时`entries: []`并说明。文献逐条保留英文著录；不编造未提供的题名或DOI。
+包含且仅包含一个`type: "references"`记录，字段`id`、`entries`（原始著录字符串数组），可选`order_page`、`description`、`nav_label`及三项中文批注。没有文献表时`entries: []`并说明。三项批注只有全部提供时才显示，不自动补充通用批注。文献逐条保留英文著录；不编造未提供的题名或DOI。
 
 ## argument：文末总览
 

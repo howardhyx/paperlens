@@ -7,7 +7,6 @@
     "citation": "Synthetic example · no real experiment or publication is represented",
     "course": "PaperLens · 论文论证精读演示"
   },
-  "reading_note": "本页全部示例文字和图版为本项目原创合成材料，不摘录真实论文，也不报告真实实验结果。源页预览同样是演示图，不是学术论文PDF。",
   "images": {
     "pages": {"1": "source-page.svg"},
     "figures": {"argument-map": "argument-map.svg"}
@@ -80,5 +79,5 @@
     "strongest": {"title": "对应关系可以核查", "text": "每个单元均保留原文、译文和具体批注，英中高亮可逐项对应。"},
     "weakest": {"title": "没有实际效果测量", "text": "清晰的演示不能替代对学习成效的直接检验。"}
   },
-  "coverage": ["本示例包含三段合成文字、一幅原创示意图和一张合成源页。", "全部内容为项目演示原创材料，按MIT许可发布。"]
+  "coverage": ["本页文字、图版及源页预览均为原创合成演示材料，不摘录真实论文，不报告真实实验结果。"]
 }
